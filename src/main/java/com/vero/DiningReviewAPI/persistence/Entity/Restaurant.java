@@ -17,6 +17,7 @@ public class Restaurant {
     private Long id;
     private String name;
     private String address;
+    private String zipCode;
     private String phone;
     private String website;
     private int peanutScore;

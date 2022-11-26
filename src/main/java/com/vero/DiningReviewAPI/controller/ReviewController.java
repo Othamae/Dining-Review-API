@@ -14,14 +14,14 @@ import com.vero.DiningReviewAPI.persistence.Entity.Review;
 import com.vero.DiningReviewAPI.persistence.Entity.ReviewStatus;
 import com.vero.DiningReviewAPI.persistence.Entity.User;
 import com.vero.DiningReviewAPI.services.ReviewServices;
+import com.vero.DiningReviewAPI.services.dto.ReviewInDTO;
 
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
 
-
-@RequestMapping("/reviews")
 @RestController
+@RequestMapping("/reviews")
 public class ReviewController {
    
     private final ReviewServices reviewServices;    
@@ -50,8 +50,8 @@ public class ReviewController {
     
     @PostMapping("/new")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public Review addNewReview (@RequestBody Review review){        
-        return this.reviewServices.addNewReview(review);       
+    public Review addNewReview (@RequestBody ReviewInDTO reviewInDTO){        
+        return this.reviewServices.addNewReview(reviewInDTO);       
     }
 
     @GetMapping("/pending")

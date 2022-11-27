@@ -5,7 +5,7 @@ import lombok.Data;
 public class RestaurantInDTO {    
     private String name;
     private String address;
-    private String zipCode;
+    private String zipcode;
     private String phone;
     private String website;
 

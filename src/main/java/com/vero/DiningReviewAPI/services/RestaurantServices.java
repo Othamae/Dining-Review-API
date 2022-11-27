@@ -19,13 +19,14 @@ public class RestaurantServices {
     private final RestaurantRepository restaurantRepository;
     private final RestaurantInDTOToRestaurant mapper;
 
+
     public List<Restaurant> findAllRestaurants() {
         return (List<Restaurant>) this.restaurantRepository.findAll();
     }
 
     public Restaurant addNewRestaurant(RestaurantInDTO restaurantInDTO) {
         Restaurant restaurant = mapper.map(restaurantInDTO);
-        Optional<Restaurant> restaurantOptional = this.restaurantRepository.findByNameAndZipCode(restaurant.getName(), restaurant.getZipCode());
+        Optional<Restaurant> restaurantOptional = this.restaurantRepository.findByNameAndZipcode(restaurant.getName(), restaurant.getZipcode());
         if (restaurantOptional.isPresent()){
             throw new ReviewExceptions("Restaurant already exist", HttpStatus.BAD_REQUEST);
         }  
@@ -37,13 +38,13 @@ public class RestaurantServices {
         if (!restaurantOptional.isPresent()){
             throw new ReviewExceptions("Restaurant not found", HttpStatus.NOT_FOUND);
         }
-        Restaurant restaurant = restaurantOptional.get();
-        return restaurant;
+        Restaurant restaurantfound = restaurantOptional.get();
+        return restaurantfound;
     }
 
 
-    public List<Restaurant> findRestaurantByZipCode(String zipCode) {
-        return this.restaurantRepository.findAllByZipcode(zipCode);
+    public List<Restaurant> findRestaurantByZipcode(String zipcode) {
+        return this.restaurantRepository.findAllByZipcode(zipcode);
     }
 
 }

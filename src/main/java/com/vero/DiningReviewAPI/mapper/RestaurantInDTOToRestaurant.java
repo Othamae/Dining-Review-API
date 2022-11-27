@@ -14,7 +14,7 @@ public class RestaurantInDTOToRestaurant implements IMapper<RestaurantInDTO, Res
         Restaurant restaurant = new Restaurant();
         restaurant.setName(in.getName());
         restaurant.setAddress(in.getAddress());
-        restaurant.setZipCode(in.getZipCode());
+        restaurant.setZipcode(in.getZipcode());
         restaurant.setPhone(in.getPhone());
         restaurant.setWebsite(in.getWebsite());
         restaurant.setPeanutScore(0);

@@ -16,7 +16,7 @@ public class Restaurant {
     private Long id;
     private String name;
     private String address;
-    private String zipCode;
+    private String zipcode;
     private String phone;
     private String website;
     private int peanutScore;
@@ -24,10 +24,10 @@ public class Restaurant {
     private int dairyScore;
     private int overallScore;
 
-    public Restaurant(String name, String address, String zipCode, String phone, String website) {
+    public Restaurant(String name, String address, String zipcode, String phone, String website) {
         this.name = name;
         this.address = address;
-        this.zipCode = zipCode;
+        this.zipcode = zipcode;
         this.phone = phone;
         this.website = website;
         this.peanutScore =0;

@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.vero.DiningReviewAPI.persistence.Repository.RestaurantRepository;
 import com.vero.DiningReviewAPI.persistence.Repository.ReviewRepository;
@@ -44,20 +45,39 @@ public class ReviewServices {
     }
 
 
-    public Review changeStatusReview(Long reviewId, ReviewStatus status) {
-        if(status!= ReviewStatus.ACCEPTED && status!= ReviewStatus.REJECTED){
-            throw new ReviewExceptions("Incorrect Status. It should be ACCEPTED or REJECTED", HttpStatus.BAD_REQUEST);
-        }
+    // public Review changeStatusReview(Long reviewId, ReviewStatus status) {
+    //     if(status!= ReviewStatus.ACCEPTED && status!= ReviewStatus.REJECTED){
+    //         throw new ReviewExceptions("Incorrect Status. It should be ACCEPTED or REJECTED", HttpStatus.BAD_REQUEST);
+    //     }
+    //     Optional<Review> reviewOptional = this.reviewRepository.findById(reviewId);
+    //     if (!reviewOptional.isPresent()){
+    //         throw new ReviewExceptions("Review not found", HttpStatus.NOT_FOUND);
+    //     }
+    //     Review reviewToChange = reviewOptional.get();
+    //     if (reviewToChange.getStatus() == ReviewStatus.ACCEPTED || reviewToChange.getStatus() == ReviewStatus.REJECTED){
+    //         throw new ReviewExceptions("Review was already Accepted or Rejected, not possible to change it.", HttpStatus.BAD_REQUEST);
+    //     }        
+    //     reviewToChange.setStatus(status);      
+    //     return this.reviewRepository.save(reviewToChange);
+    // }
+    @Transactional
+    public Review changeStatusReview(Long reviewId, ReviewStatus status) {        
         Optional<Review> reviewOptional = this.reviewRepository.findById(reviewId);
         if (!reviewOptional.isPresent()){
             throw new ReviewExceptions("Review not found", HttpStatus.NOT_FOUND);
         }
         Review reviewToChange = reviewOptional.get();
-        if (reviewToChange.getStatus() == ReviewStatus.ACCEPTED || reviewToChange.getStatus() == ReviewStatus.REJECTED){
-            throw new ReviewExceptions("Review was already Accepted or Rejected, not possible to change it.", HttpStatus.BAD_REQUEST);
-        }        
-        reviewToChange.setStatus(status);      
-        return this.reviewRepository.save(reviewToChange);
+        Boolean accepted = true;
+        if (status!=ReviewStatus.ACCEPTED){
+            accepted = false;
+        }
+        if(accepted){
+            reviewToChange.setStatus(ReviewStatus.ACCEPTED);
+        } else {
+            reviewToChange.setStatus(ReviewStatus.REJECTED);
+        }
+        Review reviewChanged = this.reviewRepository.save(reviewToChange);
+        return reviewChanged;
     }
 
 

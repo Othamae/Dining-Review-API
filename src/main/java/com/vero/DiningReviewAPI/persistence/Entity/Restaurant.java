@@ -4,7 +4,6 @@ package com.vero.DiningReviewAPI.persistence.Entity;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-
 import javax.persistence.*;
 
 @Entity
@@ -24,6 +23,18 @@ public class Restaurant {
     private int eggScore;
     private int dairyScore;
     private int overallScore;
+
+    public Restaurant(String name, String address, String zipCode, String phone, String website) {
+        this.name = name;
+        this.address = address;
+        this.zipCode = zipCode;
+        this.phone = phone;
+        this.website = website;
+        this.peanutScore =0;
+        this.eggScore=0;
+        this.dairyScore=0;
+        this.overallScore=0;
+    }
     
     
 }

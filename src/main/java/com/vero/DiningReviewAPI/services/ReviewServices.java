@@ -8,8 +8,10 @@ import org.springframework.stereotype.Service;
 import com.vero.DiningReviewAPI.persistence.Repository.RestaurantRepository;
 import com.vero.DiningReviewAPI.persistence.Repository.ReviewRepository;
 import com.vero.DiningReviewAPI.persistence.Repository.UserRepository;
+import com.vero.DiningReviewAPI.services.dto.RestaurantInDTO;
 import com.vero.DiningReviewAPI.services.dto.ReviewInDTO;
 import com.vero.DiningReviewAPI.exceptions.ReviewExceptions;
+import com.vero.DiningReviewAPI.mapper.RestaurantInDTOToRestaurant;
 import com.vero.DiningReviewAPI.mapper.ReviewInDTOToReview;
 import com.vero.DiningReviewAPI.persistence.Entity.Restaurant;
 import com.vero.DiningReviewAPI.persistence.Entity.Review;
@@ -27,6 +29,20 @@ public class ReviewServices {
     private final RestaurantRepository restaurantRepository;
     private final UserRepository userRepository;
     private final ReviewInDTOToReview mapper;
+    private final RestaurantInDTOToRestaurant mapperRestaurant;
+
+    
+    public List<Review> findAllReviews() {
+        return (List<Review>) this.reviewRepository.findAll();
+    }
+
+    public List<Restaurant> findAllRestaurants() {
+        return (List<Restaurant>) this.restaurantRepository.findAll();
+    }
+
+    public List<User> findAllUsers() {
+        return (List<User>) this.userRepository.findAll();
+    }
 
 
     public Review addNewReview(ReviewInDTO reviewInDTO){
@@ -34,11 +50,9 @@ public class ReviewServices {
         Optional<Restaurant> restaurantOptional = this.restaurantRepository.findById(review.getRestaurantId());
         if (!restaurantOptional.isPresent()){
             throw new ReviewExceptions("Restaurant not found", HttpStatus.NOT_FOUND);
-        }
-        
+        }        
         return reviewRepository.save(review);
     }
-
 
     public User createNewUser(User user) {
         Optional<User> userToCreate = this.userRepository.findByName(user.getName());
@@ -47,9 +61,17 @@ public class ReviewServices {
         }
         return this.userRepository.save(user);
     }
-
-
-
+    
+    public Restaurant addNewRestaurant(RestaurantInDTO restaurantInDTO) {
+        Restaurant restaurant = mapperRestaurant.map(restaurantInDTO);
+        Optional<Restaurant> restaurantOptional = this.restaurantRepository.findByNameAndZipCode(restaurant.getName(), restaurant.getZipCode());
+        if (restaurantOptional.isPresent()){
+            throw new ReviewExceptions("Restaurant already exist", HttpStatus.BAD_REQUEST);
+        }  
+        return this.restaurantRepository.save(restaurant);
+    }
+    
+    
     public User updateUserProfile(String name, User updateUser) {
         Optional<User> userToUpdateOptional = this.userRepository.findByName(name);
         if (!userToUpdateOptional.isPresent()){
@@ -100,10 +122,7 @@ public class ReviewServices {
     }
 
 
-    public Restaurant addNewRestaurant(Restaurant restaurant) {
-        return null;
-    }
-
+    
 
     public Restaurant findRestaurantById(Long id) {
         return null;
@@ -113,6 +132,10 @@ public class ReviewServices {
     public List<Restaurant> findRestaurantByZipCode(String zipCode) {
         return null;
     }
+
+    
+
+   
     
 
 }

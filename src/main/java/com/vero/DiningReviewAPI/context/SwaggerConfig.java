@@ -18,25 +18,24 @@ public class SwaggerConfig {
     public Docket apiDocket(){
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.vero.DiningReviewAPI.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.vero.DiningReviewAPI"))
                 .paths(PathSelectors.any())
 				.build()
-				.apiInfo(getApiInfo());
+				.apiInfo(apiInfo());
 
     }
 
-    private ApiInfo getApiInfo() {
+    private ApiInfo apiInfo() {
         return new ApiInfo(
-            "DiningReviewAPI",
-            "API REST of DiningReview.",
+            "Dining Review API",
+            "API REST of Dining Review.",
             "v1",
             "Terms of service",
-            new Contact ("Vero","www.example.com","myeaddress@company.com"),
-            "License of API", 
-            "API license URL", 
-            Collections.emptyList());
+            new Contact ("Vero","www.example.com","vero.gconesa@gmail.com"),
+            "License of API", "API license URL", Collections.emptyList());
          
     }
 
+    
     
 }

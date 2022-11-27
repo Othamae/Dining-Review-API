@@ -14,6 +14,7 @@ import com.vero.DiningReviewAPI.persistence.Entity.Review;
 import com.vero.DiningReviewAPI.persistence.Entity.ReviewStatus;
 import com.vero.DiningReviewAPI.persistence.Entity.User;
 import com.vero.DiningReviewAPI.services.ReviewServices;
+import com.vero.DiningReviewAPI.services.dto.RestaurantInDTO;
 import com.vero.DiningReviewAPI.services.dto.ReviewInDTO;
 
 import java.util.List;
@@ -30,11 +31,37 @@ public class ReviewController {
         this.reviewServices = reviewServices;
     }
 
+    @GetMapping
+    public List<Review> findAllReviews(){
+        return this.reviewServices.findAllReviews();
+    }
+
+    @GetMapping("/restaurants")
+    public List<Restaurant> findAllRestaurants(){
+        return this.reviewServices.findAllRestaurants();
+    }
+
+    @GetMapping("/users")
+    public List<User> findAllUsers(){
+        return this.reviewServices.findAllUsers();
+    }
+
+    @PostMapping("/new")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public Review addNewReview (@RequestBody ReviewInDTO reviewInDTO){        
+        return this.reviewServices.addNewReview(reviewInDTO);       
+    }
 
     @PostMapping("/users/new")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public User createNewUser (@RequestBody User user){
         return this.reviewServices.createNewUser(user);
+    }
+
+    @PostMapping("/restaurants/new")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public Restaurant addNewRestaurant(@RequestBody RestaurantInDTO restaurant){
+        return this.reviewServices.addNewRestaurant(restaurant);
     }
 
     @PutMapping("/users/update/{name}")
@@ -48,18 +75,12 @@ public class ReviewController {
     }
 
     
-    @PostMapping("/new")
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    public Review addNewReview (@RequestBody ReviewInDTO reviewInDTO){        
-        return this.reviewServices.addNewReview(reviewInDTO);       
-    }
-
     @GetMapping("/pending")
     public List<Review> reviewPendingApproval(){
         return this.reviewServices.reviewPendingApproval();
     }
 
-    @PostMapping("/status/{reviewId}")
+    @PutMapping("/status/{reviewId}")
     public Review changeStatusReview (@PathVariable("reviewId") Long reviewId, @RequestBody ReviewStatus status){
         return this.reviewServices.changeStatusReview(reviewId, status);
     }
@@ -69,11 +90,7 @@ public class ReviewController {
         return this.reviewServices.approvedReviewsByRestaurant(restaurantId);
     }
 
-    @PostMapping("/restaurants/new")
-    public Restaurant addNewRestaurant(@RequestBody Restaurant restaurant){
-        return this.reviewServices.addNewRestaurant(restaurant);
-    }
-
+    
     @GetMapping("/restaurants/{id}")
     public Restaurant findRestaurantById(@PathVariable("id") Long id){
         return this.reviewServices.findRestaurantById(id);
